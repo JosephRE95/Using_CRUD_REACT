@@ -6,6 +6,7 @@ import Message from './Message'
 import ArticleForm from './ArticleForm'
 import Spinner from './Spinner'
 import axios from 'axios'
+import { axiosWithAuth } from '../axios'
 
 const articlesUrl = 'http://localhost:9000/api/articles'
 const loginUrl = 'http://localhost:9000/api/login'
@@ -28,6 +29,9 @@ export default function App() {
     // and a message saying "Goodbye!" should be set in its proper state.
     // In any case, we should redirect the browser back to the login screen,
     // using the helper above.
+    localStorage.clear()
+    setMessage('Goodbye')
+    navigate('/')
   }
 
   const login = async ({ username, password }) => {
@@ -40,10 +44,12 @@ export default function App() {
     setMessage('');
     const data = {username, password};
     const response = await axios.post(loginUrl, data);
-    console.log(response)
+    setMessage(response.data.message)
+    localStorage.setItem('token', response.data.token);
+    navigate('/articles')
   }
 
-  const getArticles = () => {
+  const getArticles = async () => {
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch an authenticated request to the proper endpoint.
@@ -52,6 +58,12 @@ export default function App() {
     // If something goes wrong, check the status of the response:
     // if it's a 401 the token might have gone bad, and we should redirect to login.
     // Don't forget to turn off the spinner!
+    setMessage('')
+    setSpinnerOn(true)
+    const response = await axiosWithAuth().get(articlesUrl);
+    setMessage(response.data.message)
+    setArticles(response.data.message)
+    setSpinnerOn(false)
   }
 
   const postArticle = article => {
@@ -87,7 +99,7 @@ export default function App() {
           <Route path="articles" element={
             <>
               <ArticleForm />
-              <Articles />
+              <Articles getArticles={getArticles}/>
             </>
           } />
         </Routes>
