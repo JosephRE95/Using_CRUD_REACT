@@ -60,9 +60,9 @@ export default function App() {
     // Don't forget to turn off the spinner!
     setMessage('')
     setSpinnerOn(true)
-    const response = await axiosWithAuth().get(articlesUrl);
+    const response = await axiosWithAuth().get('http://localhost:9000/api/articles');
     setMessage(response.data.message)
-    setArticles(response.data.message)
+    setArticles(response.data.articles)
     setSpinnerOn(false)
   }
 
@@ -99,7 +99,7 @@ export default function App() {
           <Route path="articles" element={
             <>
               <ArticleForm />
-              <Articles getArticles={getArticles}/>
+              <Articles articles={articles} getArticles={getArticles}/>
             </>
           } />
         </Routes>
