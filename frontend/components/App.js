@@ -47,16 +47,13 @@ export default function App() {
     setSpinnerOn(false)
   }
 
-  const postArticle = article => {
-    // ✨ implement
-    // The flow is very similar to the `getArticles` function.
-    // You'll know what to do! Use log statements or breakpoints
-    // to inspect the response from the server.
+  const postArticle = async article => {
+   const response = await axiosWithAuth().post('http://localhost:9000/api/articles', article)
   }
 
-  const updateArticle = ({ article_id, article }) => {
-    // ✨ implement
-    // You got this!
+  const updateArticle = async ({ article_id, article }) => {
+    const response = await axiosWithAuth().post(`http://localhost:9000/api/articles/${article_id}`, article)
+
   }
 
   const deleteArticle = async article_id => {
