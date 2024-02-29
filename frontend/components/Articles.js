@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import PT from 'prop-types'
 
 export default function Articles(props) {
+   const navigate = useNavigate();
 
+ 
 
   useEffect(() => {
     // ✨ grab the articles here, on first render only
-    props.getArticles();
+    if(localStorage.getItem('token')) props.getArticles();
+    else  navigate('/')
   }, [])
 
   return (

@@ -24,9 +24,9 @@ export default function App() {
   const navigate = useNavigate()
 
   const logout = () => {
-    localStorage.clear()
-    setMessage('Goodbye')
-    navigate('/')
+    localStorage.clear();
+    setMessage('Goodbye!');
+    navigate('/');
   }
 
   const login = async ({ username, password }) => {
@@ -52,7 +52,7 @@ export default function App() {
    setArticles([...articles, response.data.article]);
    setMessage(response.data.message)
    setCurrentArticleId(undefined)
-
+   
   }
 
   const updateArticle = async ({ article_id, article }) => {
