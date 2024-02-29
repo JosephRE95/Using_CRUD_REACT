@@ -48,11 +48,21 @@ export default function App() {
   }
 
   const postArticle = async article => {
-   const response = await axiosWithAuth().post('http://localhost:9000/api/articles', article)
+   const response = await axiosWithAuth().post('http://localhost:9000/api/articles', article);
+   setArticles([...articles, response.data.article]);
+   setMessage(response.data.message)
+   setCurrentArticleId(undefined)
+
   }
 
   const updateArticle = async ({ article_id, article }) => {
-    const response = await axiosWithAuth().post(`http://localhost:9000/api/articles/${article_id}`, article)
+    const response = await axiosWithAuth().put(`http://localhost:9000/api/articles/${article_id}`, article)
+    const articlesCopy = [...articles]
+    const indexOfArticle = articlesCopy.findIndex(art => art.article_id === article_id);
+    articlesCopy[indexOfArticle] = response.data.article;
+    setArticles(articlesCopy)
+    setMessage(response.data.message)
+    setCurrentArticleId(undefined)
 
   }
 
@@ -79,7 +89,7 @@ export default function App() {
           <Route path="/" element={<LoginForm login={login} />} />
           <Route path="articles" element={
             <>
-              <ArticleForm setCurrentArticleId={setCurrentArticleId} currentArticle={articles.find(art => art.article_id === currentArticleId)} />
+              <ArticleForm postArticle={postArticle} updateArticle={updateArticle} setCurrentArticleId={setCurrentArticleId} currentArticle={articles.find(art => art.article_id === currentArticleId)} />
               <Articles deleteArticle={deleteArticle} setCurrentArticleId={setCurrentArticleId} currentArticleId={currentArticleId} articles={articles} getArticles={getArticles}/>
             </>
           } />

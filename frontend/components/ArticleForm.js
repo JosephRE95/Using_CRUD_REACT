@@ -10,6 +10,8 @@ export default function ArticleForm(props) {
   useEffect(() => {
    if(props.currentArticle){
     setValues(props.currentArticle)
+   } else {
+    setValues(initialFormValues)
    }
   }, [props.currentArticle])
 
@@ -20,16 +22,15 @@ export default function ArticleForm(props) {
 
   const onSubmit = evt => {
     evt.preventDefault()
-    if (props.currentArticle){
-
-    } else {
-      
-    }
-  }
+   if (props.currentArticle) props.updateArticle({
+    article_id: props.currentArticle.article_id, 
+    article: values
+   })
+   else props.postArticle(values);
+   }
 
   const isDisabled = () => {
-    // ✨ implement
-    // Make sure the inputs have some values
+  return  !(values.title.trim().length && values.text.trim().length && values.topic.length)
   }
 
   const onCancelEdit = () => {
